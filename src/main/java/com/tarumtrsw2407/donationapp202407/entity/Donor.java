@@ -8,6 +8,18 @@ package com.tarumtrsw2407.donationapp202407.entity;
  *
  * @author vk_wong
  */
-public class Donor {
-    
+public class Donor<T extends Named> {
+    /*
+    private T party;
+    private ArrayList<Donation> donations;
+    */
+    /*
+    public Donation getDonationById(int id){
+        return;
+    }
+    public ArrayList<Donation> getDonationsDuring(long start,long end){
+        return;
+    }
+    public ArrayList<Donation> getDonations
+    */
 }
