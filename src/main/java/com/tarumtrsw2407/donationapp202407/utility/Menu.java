@@ -1,5 +1,6 @@
 package com.tarumtrsw2407.donationapp202407.utility;
 
+import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
 import com.tarumtrsw2407.donationapp202407.adt.Entry;
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import java.util.Scanner;
@@ -8,18 +9,20 @@ public final class Menu<T>{
     public String message="";
     public ListInterface<Entry<String,T>> options=new ArrayList<>();
     public boolean showOptions=true;
-    private Entry<String,T> blank=new Entry(null,null);
-    private Entry<String,T> nil=new Entry(null,null);
+    private final Entry<String,T> blank=new Entry(null,null);
+    private final Entry<String,T> nil=new Entry(null,null);
     public Menu() {}
     public boolean equals(Menu<T> menu){
         return options.getItems().equals(menu.options.getItems());
     }
+    @Override
     public String toString(){
         StringBuilder s=new StringBuilder("Menu \n");
         s.append("Message: ").append(message).append('\n');
         s.append(blank.value==null?"Denies":"Accepts").append(" blank input\n");
         s.append(nil.value==null?"Reprompts":"No reprompt").append(" on no match\n");
-        s.append(options.size()).append(" option").append(options.size()!=1&&"s");
+        s.append(options.size()).append(" option").append((options.size()!=1)?"s":"");
+        return s.toString();
     }
     public String getBlankMessage(){
         return blank.key;
