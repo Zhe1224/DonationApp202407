@@ -22,4 +22,11 @@ public class Entry<T,U>{
         while (K.hasNext()&&V.hasNext())entries.append(new Entry(K.next(),V.next()));
         return entries;
     }
+    public boolean equals(Entry<T,U> entry){
+        return this.key.equals(entry.key);
+    }
+    @Override
+    public String toString(){
+        return "(".concat(key.toString()).concat(",").concat(value.toString()).concat(")");
+    }
 }

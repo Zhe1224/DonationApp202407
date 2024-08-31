@@ -3,6 +3,8 @@ package com.tarumtrsw2407.donationapp202407.adt;
 import java.io.Serializable;
 import static java.util.Arrays.copyOfRange;
 import java.util.Iterator;
+import java.lang.IndexOutOfBoundsException;
+import java.lang.IllegalArgumentException;
 
 /**
  * ArrayList.java A class that implements the ADT List using an array.
@@ -12,6 +14,10 @@ import java.util.Iterator;
  * @param <T> type of items
  */
 public final class ArrayList<T> implements ListInterface<T>, Serializable{
+    @Override
+    public Iterator<T> iterator() {
+        return getIterator();
+    }
     private class ListIterator implements Iterator<T>{
         private int nextIndex=0;
         @Override
@@ -49,46 +55,69 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     /*Generic getters*/
     @Override
+    public String toString(){
+        StringBuilder s=new StringBuilder("");
+        for (T item:getItems()) {s.append(item.toString());s.append("\n");}
+        return s.toString();
+    }
+    public boolean equals(ListInterface<T> list){
+        return size==list.size() && getItems()==list.getItems();
+    }
+    @Override
     public int size() {
         return size;
     }
     @Override
     public T at(int pos){
+        if ((pos<0) || pos+1>size()) outOfBounds(pos);
         return array[pos];
     }
     @Override
-    public ArrayList<T> getItems(int start, int end){
+    public ListInterface<T> getItems(){
+        return getItems(0,size()-1);
+    }
+    @Override
+    public ListInterface<T> getItems(int start, int end){
         return new ArrayList<>(getItemsAsArray(start, end));
     }
     @Override
-    public ArrayList<Integer> getPosOf(T item,boolean global){
-        ArrayList<Integer> output=new ArrayList<>();
-        for (int i=0;i<size();i++) if (this.at(i).equals(item)) {output.append(i);if (!global) return output;}
-        return output;
+    public int getPosOf(T item){
+        return getPosOf(item,false).at(0);
     }
     @Override
-    public ArrayList<ListInterface<Integer>> getPosOf(ListInterface<T> items,boolean global){
-        ArrayList<ListInterface<Integer>>output=new ArrayList<>();
-        for (T item:items){output.append(getPosOf(item,global));}
-        return output;
+    public ListInterface<Integer> getPosOf(T item,boolean global){
+        return getPosOf(wrap(item),global).at(0);
+    }
+    @Override
+    public ListInterface<ListInterface<Integer>> getPosOf(ListInterface<T> items,boolean global){
+        return getPosOf(new ArrayList<>(items),global);
     }
     @Override
     public Iterator<T> getIterator() {
         return new ListIterator();
     }
     /*Special getters*/
+    public T[] getItemsAsArray(){
+        return getItemsAsArray(0,size()-1);
+    }
     public T[] getItemsAsArray(int start, int end){
+        if ((start<0) || start+1>size()) outOfBounds(start);
+        if ((start<0) || end+1>size()) outOfBounds(end);
+        if (start>end) illegalRange(start,end);
         return copyOfRange(array, start, end);
     }
-    public ArrayList<ListInterface<Integer>> getPosOf(T[] items){
-        ArrayList<ListInterface<Integer>>output=new ArrayList<>();
-        for (T element;array) 
-        for (int i=0;i<size();)
-        for (T item:items){output.append(getPosOf(item));}
+    public ListInterface<ListInterface<Integer>> getPosOf(T[] items,boolean global){
+        ListInterface<ListInterface<Integer>>output=new ArrayList<>();
+        int i=0;
+        for (T element:getItems()){ 
+            output.append(new ArrayList<Integer>());
+            for (T item:items) {if (element.equals(item)) {output.at(output.size()-1).append(i);break;}}
+            i++;
+        }
         return output;
     }
-    public ArrayList<ListInterface<Integer>> getPosOf(ArrayList<T> items){
-        return getPosOf(items.getItemsAsArray(0,items.size()));
+    public ListInterface<ListInterface<Integer>> getPosOf(ArrayList<T> items,boolean global){
+        return getPosOf(items.getItemsAsArray(),global);
     }
     /*Generic mutators(create)*/
     @Override
@@ -97,8 +126,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public int append(ListInterface<T> items){
-        for (T item:items){append(item);}
-        return size();
+        return append(new ArrayList<>(items));
     }
     @Override
     public int insert(int pos,T item){
@@ -106,7 +134,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public int insert(int pos,ListInterface<T> items){
-        return insert(new ArrayList<T>(items));
+        return insert(pos,new ArrayList<>(items));
     }
     /*Special mutators(create)*/
     public int append(T[] items){
@@ -115,123 +143,63 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     public int append(ArrayList<T> items){
         return append(items.getItemsAsArray(0, items.size()));
     }
+    public int insert(int pos,ArrayList<T> items){
+        return insert(pos,items.getItemsAsArray());
+    }
     public int insert(int pos,T[] items){
         splice(pos,0,items);
         return size();
     }
-    /*Update methods*/
+    /*Generic mutators(update)*/
     @Override
     public T replace(int pos,T item){
-        T ejected=at(pos);
-        
-        return ejected;
+        return splice(pos,1,wrap(item).getItemsAsArray())[0];
     }
     @Override
-    public ArrayList<Entry<Integer,T>> replace(ListInterface<Entry<Integer, T>> posItemPair){
-        ArrayList<Entry<Integer,T>> = new ArrayList<>();
-        
+    public ListInterface<Entry<Integer,T>> replace(ListInterface<Entry<Integer, T>> posItemPair){
+        return replace(new ArrayList<>(posItemPair));
     }
-    
-    
+    /*Special mutators(Update)*/
+    public ListInterface<Entry<Integer,T>> replace(ArrayList<Entry<Integer, T>> posItemPair){
+        ListInterface<Entry<Integer,T>> o = new ArrayList<>();
+        for (Entry<Integer, T> e:posItemPair) o.append(new Entry<>(e.key,replace(e.key,e.value)));
+        return o;
+    }
     private ArrayList<T> wrap(T item){
         T[] items=(T[]) new Object[1];items[0]=item;
         return new ArrayList<>(items);
     }
-    
-    /*Special mutators*/
-    
-    /*Create methods*/
-    
-    public boolean delete(int pos){
-        return delete(pos,1);
-    }
-    public boolean delete(int pos,T item){
-        splice(pos,count,(T[])new Object[0]);
-        return true;
-    }
-
+    /*Generic mutators(delete)*/
     @Override
-    public T remove(int givenPosition) {
-        T result = null;
-
-        if ((givenPosition >= 1) && (givenPosition <= size)) {
-            result = array[givenPosition - 1];
-
-            if (givenPosition < size) {
-                removeGap(givenPosition);
-            }
-
-            size--;
-        }
-
-        return result;
+    public T delete(int pos){
+        return splice(pos,1,(T[])new Object[0])[0];
     }
-
+    @Override
+    public ListInterface<T> delete(ListInterface<Integer> pos){
+        ListInterface<T> o = new ArrayList<>();
+        ListInterface<Integer> d = new ArrayList();
+        for (int i=size();i>-1;i--) {
+            if (!(d.getPosOf(i)<0)) continue;
+            if (pos.getPosOf(i)<0) continue;
+            o.append(delete(i));
+            d.append(i);
+        }
+        return o;
+    }
+    @Override
+    public T delete(T item){
+        if (getPosOf(item)<0) return null;
+        return delete(getPosOf(item));
+    }
+    @Override
+    public T erase(T item){
+        return delete(getPosOf(item,true)).at(0);
+    }
     @Override
     public void clear() {
         size = 0;
     }
-
-    @Override
-    public boolean replace(int givenPosition, T newEntry) {
-        boolean isSuccessful = true;
-
-        if ((givenPosition >= 1) && (givenPosition <= size)) {
-            array[givenPosition - 1] = newEntry;
-        } else {
-            isSuccessful = false;
-        }
-
-        return isSuccessful;
-    }
-
-    @Override
-    public T getEntry(int givenPosition) {
-        T result = null;
-
-        if ((givenPosition >= 1) && (givenPosition <= size)) {
-            result = array[givenPosition - 1];
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean contains(T anEntry) {
-        boolean found = false;
-        for (int index = 0; !found && (index < size); index++) {
-            if (anEntry.equals(array[index])) {
-                found = true;
-            }
-        }
-        return found;
-    }
-
-    @Override
-    public int getSize() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size < 1;
-    }
-
-    @Override
-    public boolean isFull() {
-        return size == array.length;
-    }
-
-    @Override
-    public String toString() {
-        String outputStr = "";
-        for (int index = 0; index < size; ++index) {
-            outputStr += array[index] + "\n";
-        }
-
-        return outputStr;
-    }
-    
+    /*private*/
     private boolean isUnfit(int count){
         return getVacantSpace()<count;
     }
@@ -256,6 +224,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     
     private T[] splice(int start,int delCount,T[] items){
+        if ((start<0) || start+1>size()) outOfBounds(start);
         T[] cutout = (T[]) new Object[delCount];
         if (delCount>0) System.arraycopy(array,start,cutout,0,delCount);
         int delta=items.length-delCount;
@@ -266,51 +235,11 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         return cutout;
     }
     
-    public boolean equals(ArrayList<T> list){
-        return size==list.getSize() && getItems(0,size-1)==list.getItems(0,size-1);
+    private void outOfBounds(int pos) throws IndexOutOfBoundsException{
+        throw new IndexOutOfBoundsException("Expected index from 0 to ".concat(Integer.toString(size()-1)).concat("but got ").concat(Integer.toString(pos)));
     }
-
     
-
-    @Override
-    public ListInterface<ListInterface<Integer>> getPosOf(ListInterface<T> items) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void illegalRange(int start,int end) throws IllegalArgumentException{
+        throw new IllegalArgumentException(Integer.toString(start).concat(" to ").concat(Integer.toString(end).concat(" is not a valid range.")));
     }
-
-    @Override
-    public int append(ListInterface<T> items) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public int insert(int pos, ListInterface<T> items) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public T replace(int pos, ListInterface<T> item) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public ListInterface<Entry<Integer, T>> replace(Entry<Integer, T>[] posItemPair) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public ListInterface<T> delete(ListInterface<Integer> pos) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public T delete(T item) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public T erase(T item) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-   
 }
