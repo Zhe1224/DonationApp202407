@@ -3,8 +3,7 @@ package com.tarumtrsw2407.donationapp202407.adt;
 import java.io.Serializable;
 import static java.util.Arrays.copyOfRange;
 import java.util.Iterator;
-import java.lang.IndexOutOfBoundsException;
-import java.lang.IllegalArgumentException;
+import java.util.function.Function;
 
 /**
  * ArrayList.java A class that implements the ADT List using an array.
@@ -17,6 +16,13 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     @Override
     public Iterator<T> iterator() {
         return getIterator();
+    }
+
+    @Override
+    public ListInterface<T> filter(Function<T, Boolean> criteria) {
+        ListInterface<T> o=new ArrayList();
+        for (T item:getItems()) if (criteria.apply(item)) o.append(item);
+        return o;
     }
     private class ListIterator implements Iterator<T>{
         private int nextIndex=0;
@@ -162,7 +168,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     /*Special mutators(Update)*/
     public ListInterface<Entry<Integer,T>> replace(ArrayList<Entry<Integer, T>> posItemPair){
         ListInterface<Entry<Integer,T>> o = new ArrayList<>();
-        for (Entry<Integer, T> e:posItemPair) o.append(new Entry<>(e.key,replace(e.key,e.value)));
+        for (Entry<Integer, T> e:posItemPair) o.append(new Entry<>(e.getKey(),replace(e.getKey(),e.getValue())));
         return o;
     }
     private ArrayList<T> wrap(T item){
