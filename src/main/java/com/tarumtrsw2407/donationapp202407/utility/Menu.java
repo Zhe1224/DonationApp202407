@@ -1,29 +1,25 @@
 package com.tarumtrsw2407.donationapp202407.utility;
 
+import com.tarumtrsw2407.donationapp202407.adt.Entry;
+import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import java.util.Scanner;
 
 public final class Menu<T>{
-    private class Config{
-        public String prompt;
-        public int choices;
-        public boolean continueOnBlank;
-        public boolean continueOnNoInput;
-    }
     public String message="";
-    public Entry<String,T>[] options;
-    public Entry<String,T> blank=null;
-    public Entry<String,T> nil=null;
-    public Menu() {
+    public ListInterface<Entry<String,T>> options=new ArrayList<>();
+    public boolean showOptions=true;
+    private Entry<String,T> blank=new Entry(null,null);
+    private Entry<String,T> nil=new Entry(null,null);
+    public Menu() {}
+    public boolean equals(Menu<T> menu){
+        return options.getItems().equals(menu.options.getItems());
     }
-    public void setOptions(String[] labels,T[] items){
-        this.options=new Entry<String,T>("",null).build(labels,items);
-    }
-    /*
-    public void includeOptions(String[] labels,T[] items){
-        this.options.append()=new Entry<String,T>("",null).build(labels,items);
-    }
-    */
-    public void excludeOptions(String[] labels){
+    public String toString(){
+        StringBuilder s=new StringBuilder("Menu \n");
+        s.append("Message: ").append(message).append('\n');
+        s.append(blank.value==null?"Denies":"Accepts").append(" blank input\n");
+        s.append(nil.value==null?"Reprompts":"No reprompt").append(" on no match\n");
+        s.append(options.size()).append(" option").append(options.size()!=1&&"s");
     }
     public String getBlankMessage(){
         return blank.key;
@@ -50,18 +46,16 @@ public final class Menu<T>{
     public void setNoMatchValue(T item){
         this.nil.value=item;
     }
+    public void setNoMatchMessage(String message){
+        this.nil.key=(message==null||message.isEmpty())?null:message;
+    }
     public void continueOnNoMatch(){
         setNoMatchValue(null);
     }
-    public void setNoMatchMessage(String message){
-        if (message==null||message.isEmpty()) this.nil.key=null;
-        this.nil.key=message;
-    }
     public T prompt(){
-        for (Entry<String, T> option : options) System.out.println(option.key);
-        String input;
+        if (showOptions) for (Entry<String, T> option : options) System.out.println(option.key);
         for(;;){
-            input=askUser();
+            String input=askUser();
             if (input.isEmpty()){
                 if (blank.key!=null) System.out.println(blank.key);
                 if (blank.value!=null) return blank.value;
