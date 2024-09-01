@@ -33,7 +33,8 @@ public class DoneeUI {
             System.out.println("4. Search Donee");
             System.out.println("5. List All Donees with Donations");
             System.out.println("6. Filter Donees");
-            System.out.println("7. Exit");
+            System.out.println("7. Generate Summary Report");
+            System.out.println("8. Exit");
             System.out.print("Enter choice: ");
 
             int choice = scanner.nextInt();
@@ -59,6 +60,9 @@ public class DoneeUI {
                     filterDonees();
                     break;
                 case 7:
+                    generateSummaryReport();
+                    break;
+                case 8:
                     MessageUI.displayExitMessage();
                     return;
                 default:
@@ -214,6 +218,11 @@ public class DoneeUI {
 
     private void listAllDoneesWithDonations() {
         doneeManager.listAllDoneesWithDonations();
+    }
+
+    public void generateSummaryReport(){
+        String report = doneeManager.generateSummaryReport();
+        System.out.println(report);
     }
 
     private void filterDonees() {
