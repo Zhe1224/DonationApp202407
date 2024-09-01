@@ -5,6 +5,10 @@ import com.tarumtrsw2407.donationapp202407.adt.Entry;
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import java.util.function.Function;
 
+/**
+ *
+ * @author Wong Xiao Zhe
+ */
 public final class Menu<T> extends InputPrompt<T>{
     public ListInterface<Entry<String,T>> options=new ArrayList<>();
     public boolean showOptions=true;

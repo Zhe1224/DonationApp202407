@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tarumtrsw2407.donationapp202407.boundary;
 
 import java.util.function.Function;
 
 /**
  *
- * @author Zhe1224
+ * @author Wong Xiao Zhe
  * @param <T>
  */
 public class InputPrompt<T> extends BasePrompt<T> {

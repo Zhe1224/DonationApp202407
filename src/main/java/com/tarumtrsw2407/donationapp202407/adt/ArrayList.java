@@ -8,8 +8,7 @@ import java.util.function.Function;
 /**
  * ArrayList.java A class that implements the ADT List using an array.
  *
- * @author Zhe1224
- * @version ???
+ * @author Wong Xiao Zhe
  * @param <T> type of items
  */
 public final class ArrayList<T> implements ListInterface<T>, Serializable{

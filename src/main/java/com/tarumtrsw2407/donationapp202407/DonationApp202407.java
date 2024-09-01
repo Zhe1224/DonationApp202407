@@ -6,7 +6,7 @@ package com.tarumtrsw2407.donationapp202407;
 
 /**
  *
- * @author vk_wong
+ * @author Wong Xiao Zhe
  */
 public class DonationApp202407 {
 

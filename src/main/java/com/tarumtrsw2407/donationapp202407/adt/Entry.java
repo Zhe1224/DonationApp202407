@@ -5,7 +5,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Zhe1224
+ * @author Wong Xiao Zhe
  * @param <T> type of key
  * @param <U> type of value/data associated with the key
  */
