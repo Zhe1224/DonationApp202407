@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tarumtrsw2407.donationapp202407.entity;
 
-import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
+import com.tarumtrsw2407.donationapp202407.adt.Type;
 import com.tarumtrsw2407.donationapp202407.control.DonationsManager;
 import java.util.Date;
 import java.util.Objects;
@@ -42,12 +38,10 @@ public class PersonDonor implements Donor{
         return birthday;
     }
 
-    @Override
     public Date getAge() {
         return getAge(new Date());
     }
     
-    @Override
     public Date getAge(Date date) {
         return new Date(getExistDate().getTime()-date.getTime());
     }
@@ -153,5 +147,5 @@ public class PersonDonor implements Donor{
             return false;
         }
         return Objects.equals(this.birthday, other.birthday);
-    }    
+    }
 }
