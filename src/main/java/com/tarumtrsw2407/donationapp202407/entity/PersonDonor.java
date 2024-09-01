@@ -57,7 +57,7 @@ public class PersonDonor implements Donor{
         return homeRegion;
     }
 
-    @Override
+    /*@Override
     public DonationsManager getDonations() {
         return donations;
     }
@@ -75,7 +75,7 @@ public class PersonDonor implements Donor{
     @Override
     public Date getLatestDonationDate() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    }*/
 
     @Override
     public void setId(String id) {

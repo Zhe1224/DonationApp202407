@@ -28,8 +28,17 @@ public final class Menu<T> extends InputPrompt<T>{
         s.append(options.size()).append(" option").append((options.size()!=1)?"s":"");
         return s.toString();
     }
-    public ListInterface<Entry<String, T>> getOptions() { return new ArrayList<>(options); }
+    public ListInterface<Entry<String, T>> getOptions() { return options; }
     public void setOptions(ListInterface<Entry<String, T>> options) { this.options = new ArrayList<>(options); }
+    public void include(String key,T value){
+        Entry<String, T> e = new Entry(key,value);
+        int o=options.getPosOf(e);
+        if (o<0) options.append(e);
+        else options.replace(o,e);
+    }
+    public void exclude(String key){
+        options.erase(new Entry<>(key,null));
+    }
     public boolean isShowOptions() { return showOptions; }
     public void setShowOptions(boolean showOptions) { this.showOptions = showOptions; }
     @Override

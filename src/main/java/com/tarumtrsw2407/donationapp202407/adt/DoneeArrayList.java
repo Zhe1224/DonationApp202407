@@ -1,10 +1,10 @@
-package adt;
+package com.tarumtrsw2407.donationapp202407.adt;
 
 /**
  * @author Maxmillian Hoe Hon Lin
  */
 
-import entity.*;
+import com.tarumtrsw2407.donationapp202407.entity.*;
 import java.io.Serializable;
 
 public class DoneeArrayList<T> implements DoneeListInterface<T>, Serializable {
