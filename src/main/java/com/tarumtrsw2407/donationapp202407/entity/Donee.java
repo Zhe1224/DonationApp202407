@@ -55,6 +55,16 @@ public class Donee {
         donations = newDonations;
     }
 
+    public double getTotalDonationAmount() {
+    double total = 0;
+    for (Donation donation : donations) {
+        if (donation != null) { // Check if donation is not null
+            total += donation.getAmount();  // Assuming getAmount() returns the donation amount
+        }
+    }
+    return total;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
