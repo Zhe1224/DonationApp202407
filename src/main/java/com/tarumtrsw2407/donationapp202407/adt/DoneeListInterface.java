@@ -12,4 +12,5 @@ public interface DoneeListInterface<T> {
   Donee[] getAllDonees();
   Donee[] filterDoneesByCriteria(String criteria);
   void listAllDoneesWithDonations();
+  void generateSummaryReport();
 }
