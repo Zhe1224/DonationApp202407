@@ -47,4 +47,8 @@ public class DoneeManager {
     public Donee[] filterDoneesByCriteria(String criteria) {
         return doneeList.filterDoneesByCriteria(criteria);
     }
+
+    public String generateSummaryReport(){
+        return doneeList.generateSummaryReport();
+    }
 }
