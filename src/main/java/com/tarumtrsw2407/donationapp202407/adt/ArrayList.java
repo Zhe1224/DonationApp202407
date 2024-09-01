@@ -87,7 +87,9 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public int getPosOf(T item){
-        return getPosOf(item,false).at(0);
+        ListInterface<Integer> r = getPosOf(item,false);
+        if (r.size()>0) return r.at(0);
+        return -1;
     }
     @Override
     public ListInterface<Integer> getPosOf(T item,boolean global){

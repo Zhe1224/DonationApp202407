@@ -13,38 +13,48 @@ import java.util.Date;
  * @author Wong Xiao Zhe
  */
 public class OrgDonor implements Donor{
-
+    private String id;
+    private Type type;
+    private String name;
+    private Date foundDate;
+    private String homeRegion;
+    private DonationsManager donations;
     @Override
     public String getId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return id;
     }
 
     @Override
     public Type getType() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return type;
     }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return name;
     }
 
     @Override
     public Date getExistDate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return foundDate;
     }
 
     @Override
     public Date getAge() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getAge(new Date());
+    }
+    
+    @Override
+    public Date getAge(Date date) {
+        return new Date(getExistDate().getTime()-date.getTime());
     }
 
     @Override
     public String getHomeRegion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return homeRegion;
     }
 
-    @Override
+    /*@Override
     public DonationsManager getDonations() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -62,7 +72,7 @@ public class OrgDonor implements Donor{
     @Override
     public Date getLatestDonationDate() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    }*/
 
     @Override
     public void setId(String id) {
@@ -86,11 +96,6 @@ public class OrgDonor implements Donor{
 
     @Override
     public void setHomeRegion(String region) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Date getAge(Date date) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
