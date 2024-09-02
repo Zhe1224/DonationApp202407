@@ -4,6 +4,8 @@
  */
 package com.tarumtrsw2407.donationapp202407.entity;
 
+import java.util.Objects;
+
 /**
  *
  * @author User
@@ -69,4 +71,30 @@ public class Volunteer {
         /*eliminate*/sb.append("Assigned Event: ").append(assignedEvent != null ? assignedEvent : "No event assigned").append("\n");
         return sb.toString();
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Volunteer other = (Volunteer) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return Objects.equals(this.name, other.name);
+    }
+    
+    
 }

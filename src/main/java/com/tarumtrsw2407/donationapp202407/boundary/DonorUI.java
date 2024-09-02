@@ -77,6 +77,7 @@ public class DonorUI {
     }
     public DonorManager appendDonor(){
         InputPrompt<String> pName = new InputPrompt<>(string->string);
+        
         return null;
     }
 }

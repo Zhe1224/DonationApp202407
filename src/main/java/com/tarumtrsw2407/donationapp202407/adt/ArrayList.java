@@ -74,6 +74,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public T at(int pos){
+        if (size<1) System.err.print("Empty!");
         if ((pos<0) || pos+1>size()) outOfBounds(pos);
         return array[pos];
     }
@@ -109,7 +110,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     public T[] getItemsAsArray(int start, int end){
         if ((start<0) || start+1>size()) outOfBounds(start);
-        if ((start<0) || end+1>size()) outOfBounds(end);
+        if ((end<0) || end+1>size()) outOfBounds(end);
         if (start>end) illegalRange(start,end);
         return copyOfRange(array, start, end);
     }
@@ -148,19 +149,20 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         return insert(size(),items);
     }
     public int append(ArrayList<T> items){
-        return append(items.getItemsAsArray(0, items.size()));
+        return append(items.getItemsAsArray());
     }
     public int insert(int pos,ArrayList<T> items){
         return insert(pos,items.getItemsAsArray());
     }
     public int insert(int pos,T[] items){
+
         splice(pos,0,items);
         return size();
     }
     /*Generic mutators(update)*/
     @Override
     public T replace(int pos,T item){
-        return splice(pos,1,wrap(item).getItemsAsArray())[0];
+        return splice(pos,1,wrap(item))[0];
     }
     @Override
     public ListInterface<Entry<Integer,T>> replace(ListInterface<Entry<Integer, T>> posItemPair){
@@ -172,9 +174,9 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         for (Entry<Integer, T> e:posItemPair) o.append(new Entry<>(e.getKey(),replace(e.getKey(),e.getValue())));
         return o;
     }
-    private ArrayList<T> wrap(T item){
+    private T[] wrap(T item){
         T[] items=(T[]) new Object[1];items[0]=item;
-        return new ArrayList<>(items);
+        return items;
     }
     /*Generic mutators(delete)*/
     @Override
@@ -231,7 +233,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     
     private T[] splice(int start,int delCount,T[] items){
-        if ((start<0) || start+1>size()) outOfBounds(start);
+        if ((start<0) || start>size()) outOfBounds(start);
         T[] cutout = (T[]) new Object[delCount];
         if (delCount>0) System.arraycopy(array,start,cutout,0,delCount);
         int delta=items.length-delCount;
@@ -243,7 +245,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     
     private void outOfBounds(int pos) throws IndexOutOfBoundsException{
-        throw new IndexOutOfBoundsException("Expected index from 0 to ".concat(Integer.toString(size()-1)).concat("but got ").concat(Integer.toString(pos)));
+        throw new IndexOutOfBoundsException("Expected index from 0 to ".concat(Integer.toString(size())).concat(" but got ").concat(Integer.toString(pos)));
     }
     
     private void illegalRange(int start,int end) throws IllegalArgumentException{
