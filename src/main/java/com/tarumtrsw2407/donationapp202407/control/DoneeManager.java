@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package control;
+package com.tarumtrsw2407.donationapp202407.control;
 
-import adt.*;
-import entity.Donee;
+import com.tarumtrsw2407.donationapp202407.adt.*;
+import com.tarumtrsw2407.donationapp202407.entity.Donee;
 /**
  *
  * @author maxmi

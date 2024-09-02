@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package boundary;
+package com.tarumtrsw2407.donationapp202407.boundary;
 
 /**
  *
  * @author maxmiillian hoe hon lin
  */
-import entity.Donee;
-import control.DoneeManager;
-import entity.*;
+import com.tarumtrsw2407.donationapp202407.entity.Donee;
+import com.tarumtrsw2407.donationapp202407.control.DoneeManager;
+import com.tarumtrsw2407.donationapp202407.entity.*;
 import java.util.Scanner;
 import utility.MessageUI;
 
