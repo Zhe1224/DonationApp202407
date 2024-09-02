@@ -89,8 +89,8 @@ public class EventManagementDriver {
 
     private static void addPresetData(EventManagementSystem eventManagementSystem) {
         // Preset Events
-        eventManagementSystem.addEvent(new Event("E001", "Charity Run", "2024-09-10", "Central Park"));
-        eventManagementSystem.addEvent(new Event("E002", "Food Drive", "2024-09-12", "Community Center"));
+        eventManagementSystem.addEvent(new Event("E001", "Nature Blood Donation", "2024-09-10", "Central Park"));
+        eventManagementSystem.addEvent(new Event("E002", "NYC Blood Donation", "2024-09-12", "Community Center"));
 
         // Preset Volunteers
         eventManagementSystem.addVolunteer(new Volunteer("V001", "Alice","745", "alice@example.com"));
