@@ -11,9 +11,10 @@ package com.tarumtrsw2407.donationapp202407.boundary;
 import com.tarumtrsw2407.donationapp202407.control.VolunteerManager;
 import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
-import java.util.Iterator;
+import com.tarumtrsw2407.donationapp202407.control.EventManagementSystem;
 
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class VolunteerUI {
     private VolunteerManager volunteerManager;
@@ -22,6 +23,11 @@ public class VolunteerUI {
     public VolunteerUI() {
         volunteerManager = new VolunteerManager();
         scanner = new Scanner(System.in);
+    }
+    
+    public VolunteerUI(VolunteerManager volunteer,EventManagementSystem event) {
+        this();
+        volunteerManager = new VolunteerManager();
     }
 
     public void displayMenu() {
@@ -85,14 +91,37 @@ public class VolunteerUI {
     }
 
     private void addVolunteer() {
-        System.out.print("Enter Volunteer ID: ");
+        System.out.print("Enter Volunteer ID (Format: V[number]): ");
         String id = scanner.nextLine();
+
+        if (!id.matches("^V\\d+$")) {
+            System.out.println("Invalid ID format. It should start with 'V' followed by numbers.");
+            return;
+        }
+
         System.out.print("Enter Volunteer Name: ");
         String name = scanner.nextLine();
+
+        if (name.isEmpty()) {
+            System.out.println("Name cannot be empty.");
+            return;
+        }
+
         System.out.print("Enter Contact Number: ");
         String contactNumber = scanner.nextLine();
+
+        if (!isValidPhoneNumber(contactNumber)) {
+            System.out.println("Invalid contact number.");
+            return;
+        }
+
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
+
+        if (!isValidEmail(email)) {
+            System.out.println("Invalid email format.");
+            return;
+        }
 
         Volunteer volunteer = new Volunteer(id, name, contactNumber, email);
         volunteerManager.addVolunteer(volunteer);
@@ -170,8 +199,7 @@ public class VolunteerUI {
         String event = scanner.nextLine();
         ListInterface<Volunteer> volunteers = volunteerManager.filterVolunteersByEvent(event);
         if (volunteers.size() > 0) {
-            Iterator<Volunteer> i=volunteers.getIterator();
-            while (i.hasNext()) System.out.println(i.next());     
+            volunteers.getIterator().forEachRemaining(System.out::println);
         } else {
             System.out.println("No volunteers found for this event.");
         }
@@ -182,8 +210,21 @@ public class VolunteerUI {
         System.out.println(report);
     }
 
-    public static void main(String[] args) {
+    private boolean isValidPhoneNumber(String contactNumber) {
+        return contactNumber.matches("^\\+?[0-9]{10,13}$");
+    }
+
+    private boolean isValidEmail(String email) {
+        return Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$").matcher(email).matches();
+    }
+
+    public VolunteerManager main() {
+        return main(null);
+    }
+    
+    public VolunteerManager main(String[] args) {
         VolunteerUI ui = new VolunteerUI();
         ui.displayMenu();
+        return volunteerManager;
     }
 }

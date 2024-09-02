@@ -29,7 +29,7 @@ public class InputPrompt<T> extends BasePrompt<T> {
             String input = askUser();
             if (input.isEmpty()){
                 if (blankMessage != null) {System.out.println(blankMessage);}
-                if (blankValue != null) return (T)blankValue;
+                if (blankValue != null) return blankValue;
                 continue;
             }
             T result = convertInput(input);

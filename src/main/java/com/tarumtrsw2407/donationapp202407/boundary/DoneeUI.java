@@ -24,7 +24,7 @@ public class DoneeUI {
         this.scanner = new Scanner(System.in);
     }
 
-    public void run() {
+    public DoneeManager main() {
         while (true) {
             System.out.println("Donee Management System");
             System.out.println("1. Add Donee");
@@ -64,7 +64,7 @@ public class DoneeUI {
                     break;
                 case 8:
                     MessageUI.displayExitMessage();
-                    return;
+                    return doneeManager;
                 default:
                     MessageUI.displayInvalidChoiceMessage();
             }

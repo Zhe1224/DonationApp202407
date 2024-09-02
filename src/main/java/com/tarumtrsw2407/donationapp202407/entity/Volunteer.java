@@ -4,8 +4,6 @@
  */
 package com.tarumtrsw2407.donationapp202407.entity;
 
-import java.util.Objects;
-
 /**
  *
  * @author User
@@ -15,14 +13,12 @@ public class Volunteer {
     private String name;
     private String contactNumber;
     private String email;
-    private String assignedEvent;
 
     public Volunteer(String id, String name, String contactNumber, String email) {
         this.id = id;
         this.name = name;
         this.contactNumber = contactNumber;
         this.email = email;
-        this.assignedEvent = null; 
     }
 
     public String getId() {
@@ -39,14 +35,6 @@ public class Volunteer {
 
     public String getEmail() {
         return email;
-    }
-    /*eliminate*/
-    public String getAssignedEvent() {
-        return assignedEvent;
-    }
-    /*eliminate*/
-    public void assignEvent(String event) {
-        this.assignedEvent = event;
     }
 
     public void setName(String name) {
@@ -68,33 +56,6 @@ public class Volunteer {
         sb.append("Name: ").append(name).append("\n");
         sb.append("Contact Number: ").append(contactNumber).append("\n");
         sb.append("Email: ").append(email).append("\n");
-        /*eliminate*/sb.append("Assigned Event: ").append(assignedEvent != null ? assignedEvent : "No event assigned").append("\n");
         return sb.toString();
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Volunteer other = (Volunteer) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.name, other.name);
-    }
-    
-    
 }

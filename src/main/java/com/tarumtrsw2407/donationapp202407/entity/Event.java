@@ -1,60 +1,113 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tarumtrsw2407.donationapp202407.entity;
 
-import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
-import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
+import com.tarumtrsw2407.donationapp202407.adt.ArrayList2;
+import com.tarumtrsw2407.donationapp202407.adt.ListInterface2;
 
 /**
  *
  * @author KJ
  */
 
-
 public class Event {
-    private String eventId;
-    private String eventName;
-    private ListInterface<Volunteer> volunteers;
+    private String id;
+    private String name;
+    private String date;
+    private String location;
+    private ListInterface2<Volunteer> volunteers;
 
-    public Event(String eventId, String eventName) {
-        this.eventId = eventId;
-        this.eventName = eventName;
-        this.volunteers = new ArrayList<>();
+    public Event(String id, String name, String date, String location) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.location = location;
+        this.volunteers = new ArrayList2<>();  // Initialize the list of volunteers
     }
 
-    // Getters and setters
-    public String getEventId() {
-        return eventId;
+    // Getters and Setters
+    public String getId() {
+        return id;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getName() {
+        return name;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ListInterface<Volunteer> getVolunteers() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    // Add a volunteer to the event
+    public boolean addVolunteer(Volunteer volunteer) {
+        if (!containsVolunteer(volunteer.getId())) {
+            return volunteers.add(volunteer);
+        }
+        return false;  // Volunteer is already assigned to the event
+    }
+
+    // Remove a volunteer from the event
+    public boolean removeVolunteer(String volunteerId) {
+        for (int i = 1; i <= volunteers.getNumberOfEntries(); i++) {
+            Volunteer volunteer = volunteers.getEntry(i);
+            if (volunteer.getId().equals(volunteerId)) {
+                volunteers.remove(i);
+                return true;
+            }
+        }
+        return false;  // Volunteer not found in the event
+    }
+
+    // Check if a volunteer is assigned to the event
+    public boolean containsVolunteer(String volunteerId) {
+        for (int i = 1; i <= volunteers.getNumberOfEntries(); i++) {
+            Volunteer volunteer = volunteers.getEntry(i);
+            if (volunteer.getId().equals(volunteerId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Get the list of volunteers for this event
+    public ListInterface2<Volunteer> getVolunteers() {
         return volunteers;
-    }
-
-    public void addVolunteer(Volunteer volunteer) {
-        volunteers.append(volunteer);
-    }
-
-    public void removeVolunteer(Volunteer volunteer) {
-        volunteers.delete(volunteer);
     }
 
     @Override
     public String toString() {
-        return "Event ID: " + eventId + ", Event Name: " + eventName;
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("=========================================================================")).append("\n");
+        sb.append(String.format("%-10s%-20s%-20s%-20s", "Event ID", "Event Name","Date","Location")).append("\n");
+        sb.append(String.format("=========================================================================")).append("\n");
+        sb.append(String.format("%-10s%-20s%-20s%-20s", id, name,date,location)).append("\n");
+        sb.append(String.format("=========================================================================")).append("\n");
+        
+        sb.append("Volunteers assgined: ").append(volunteers.getNumberOfEntries()).append("\n");
+        for (int i = 1; i <= volunteers.getNumberOfEntries(); i++) {
+            sb.append("  ").append(volunteers.getEntry(i)).append("\n");
+        }
+        sb.append(String.format("=========================================================================")).append("\n");
+
+        return sb.toString();
     }
 }
+

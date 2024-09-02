@@ -56,36 +56,29 @@ public class VolunteerManager {
     public boolean assignVolunteerToEvent(String id, String event) {
         Volunteer volunteer = searchVolunteerById(id);
         if (volunteer != null) {
-            volunteer.assignEvent(event);
+            /*volunteer.assignEvent(event);*/
             return true;
         }
         return false;
-        /* use Event event as param; event.setVolunteer(volunteer); */
     }
 
     public String searchEventUnderVolunteer(String id) {
         Volunteer volunteer = searchVolunteerById(id);
-        return volunteer != null ? volunteer.getAssignedEvent() : null;
+        return /*volunteer != null ? volunteer.getAssignedEvent() :*/ null;
     }
-    /* Add param EventManager events
-    events.getEvents().filter(event->event.getVolunteer.equals(volunteer)); */
 
     public ListInterface<Volunteer> listAllVolunteers() {
-        ListInterface<Volunteer> allVolunteers = new ArrayList<>();
-        for (int i = 0; i < volunteers.size(); i++) {
-            allVolunteers.append(volunteers.at(i));
-        }
-        return allVolunteers;
+        return volunteers;
     }
 
     public ListInterface<Volunteer> filterVolunteersByEvent(String event) {
         ListInterface<Volunteer> filteredVolunteers = new ArrayList<>();
-        for (int i = 0; i < volunteers.size(); i++) {
+        /*for (int i = 0; i < volunteers.size(); i++) {
             Volunteer volunteer = volunteers.at(i);
             if (event.equals(volunteer.getAssignedEvent())) {
                 filteredVolunteers.append(volunteer);
             }
-        }
+        }*/
         return filteredVolunteers;
     }
 

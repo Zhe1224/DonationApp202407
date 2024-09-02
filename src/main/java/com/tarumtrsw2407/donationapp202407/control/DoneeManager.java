@@ -12,6 +12,10 @@ import com.tarumtrsw2407.donationapp202407.entity.Donee;
  */
 public class DoneeManager {
     private DoneeArrayList doneeList;
+    
+    public DoneeManager() {
+        this.doneeList = new DoneeArrayList();
+    }
 
     public DoneeManager(DoneeArrayList doneeList) {
         this.doneeList = doneeList;

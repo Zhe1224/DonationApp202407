@@ -1,13 +1,16 @@
 package com.tarumtrsw2407.donationapp202407.control;
 
 import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
+import com.tarumtrsw2407.donationapp202407.adt.DonorBody;
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
-import com.tarumtrsw2407.donationapp202407.adt.Type;
+import com.tarumtrsw2407.donationapp202407.adt.DonorType;
 import com.tarumtrsw2407.donationapp202407.entity.Donation;
 import com.tarumtrsw2407.donationapp202407.entity.Donor;
 import com.tarumtrsw2407.donationapp202407.entity.OrgDonor;
 import com.tarumtrsw2407.donationapp202407.entity.PersonDonor;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  *
@@ -30,18 +33,28 @@ public class DonorManager {
     public ListInterface<Donor> getDonors(){
         return donors;
     }
-    public ListInterface<Donor> filterDonors(){
-        return donors;
+    public String printDonors(){
+        StringBuilder sb=new StringBuilder();
+        for (Donor d:donors){
+            
+            sb.append("ID:").append(d.getId()).append(" | Name:").append(d.getName()).append('\n');
+            
+        }
+        return sb.toString();
     }
-    public int addDonor(boolean individual,String id,Type type,String firstName,String lastName,Date date,String region){
-        Donor donor=individual?new PersonDonor():new OrgDonor();
+    public DonorManager filter(Function<Donor,Boolean> criteria){
+        return new DonorManager(donors.filter(criteria));
+    }
+    public int add(DonorBody kind,String id,DonorType type,String firstName,String lastName,Date date,String region){
+        Donor donor=(kind==DonorBody.Person)?new PersonDonor():(kind==DonorBody.Org)?new OrgDonor():null;
+        if (donor==null) throw new IllegalArgumentException("Unspecified Donor Type!");
         donor.setId(id);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
         return donors.append(donor);
     }
-    public void updateDonor(Donor old,Donor donor){
-        donors.replace(donors.getPosOf(old),donor);
+    public void update(Donor donor,String id,DonorType type,String firstName,String lastName,Date date,String region){
+        donor.setId(id);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
     }
-    public void removeDonor(Donor donor){
+    public void remove(Donor donor){
         donors.delete(donor);
     }
     public DonationsManager getDonationsByDonor(DonationsManager donations,Donor donor){
@@ -51,8 +64,8 @@ public class DonorManager {
         StringBuilder sb=new StringBuilder("");
         for (Donor donor:donors) {
             sb.append(donor);
-            getDonationsByDonor(donations,donor).getDonations();
-            for (Donation donation:getDonationsByDonor(donations,donor).getDonations()) sb.append(donation);
+            /*getDonationsByDonor(donations,donor).getDonations();
+            for (Donation donation:getDonationsByDonor(donations,donor).getDonations()) sb.append(donation);*/
         }
         return sb.toString();
     }
@@ -61,18 +74,20 @@ public class DonorManager {
         for (Donation donation:getDonationsByDonor(donations,donor).getDonations()) o=o+donation.getAmount();
         return o;
     }
-    public String generateSummary(DonationsManager donations){
-        return "";
+    public String summary(){
+        return summary(null);
     }
-    public ListInterface<Donor> main(){
-        for(;;){
-            
-            break;
-        }
-        return donors;
+    public String summary(DonationsManager donations){
+        final String sep=new String(new char[14]).replace("\0", "=");
+        StringBuilder sb=new StringBuilder();
+        sb.append("Donors Summary\n").append(sep);
+        sb.append("\nDonors count: ").append(donors.size()).append('\n');
+        Iterator<Donor> i=donors.getIterator();
+        while (i.hasNext()) sb.append(i.next().toString()).append(sep);
+        return sb.toString();
     }
-    public static void main(String[] args) {
-        DonorManager donorManager = new DonorManager();
-        donorManager.main();
+    @Override
+    public String toString(){
+        return summary();
     }
 }

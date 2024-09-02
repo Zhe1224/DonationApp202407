@@ -122,7 +122,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         for (T item:items) {
             int i=0;
             output.append(new ArrayList<Integer>());
-            System.out.println("OO".concat(Integer.toString(getItems().size())));
+            if (size()<1) continue;
             for (T element:getItems()){ 
                 if (!element.equals(item)) continue;
                 output.at(output.size()-1).append(i);

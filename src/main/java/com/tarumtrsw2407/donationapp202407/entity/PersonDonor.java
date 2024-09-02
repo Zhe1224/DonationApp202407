@@ -1,6 +1,6 @@
 package com.tarumtrsw2407.donationapp202407.entity;
 
-import com.tarumtrsw2407.donationapp202407.adt.Type;
+import com.tarumtrsw2407.donationapp202407.adt.DonorType;
 import com.tarumtrsw2407.donationapp202407.control.DonationsManager;
 import java.util.Date;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class PersonDonor implements Donor{
     private String id;
-    private Type type;
+    private DonorType type;
     private String firstName;
     private String lastName;
     private Date birthday;
@@ -24,7 +24,7 @@ public class PersonDonor implements Donor{
     }
 
     @Override
-    public Type getType() {
+    public DonorType getType() {
         return type;
     }
 
@@ -77,7 +77,7 @@ public class PersonDonor implements Donor{
     }
 
     @Override
-    public void setType(Type type) {
+    public void setType(DonorType type) {
         this.type=type;
     }
 
@@ -99,15 +99,12 @@ public class PersonDonor implements Donor{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("DonorPerson{");
-        sb.append("ID=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", firstName=").append(firstName);
-        sb.append(", lastName=").append(lastName);
-        sb.append(", birthday=").append(birthday);
-        sb.append(", homeRegion=").append(homeRegion);
-        sb.append(", donations=").append(donations.toString());
-        sb.append('}');
+        sb.append("\nID: ").append(id).append(" | ");
+        sb.append(getName()).append('\n');
+        sb.append(type).append(" Individual Donor");
+        sb.append("\nBirthday: ").append(birthday);
+        sb.append("\nHome Region: ").append(homeRegion);
+        sb.append('\n');
         return sb.toString();
     }
 
