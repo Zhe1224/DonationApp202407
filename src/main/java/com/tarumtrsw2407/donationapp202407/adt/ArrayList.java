@@ -239,7 +239,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         int delta=items.length-delCount;
         if (delta>0) expose(start,delta);
         System.arraycopy(items,0,array,start,items.length);
-        if (delta<0) cover(start-delta,0-delta);
+        if (delta<0) cover(start,-delta);
         size+=delta;
         return cutout;
     }
