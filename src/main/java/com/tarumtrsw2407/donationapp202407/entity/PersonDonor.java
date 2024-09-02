@@ -101,7 +101,7 @@ public class PersonDonor implements Donor{
         StringBuilder sb = new StringBuilder();
         sb.append("\nID: ").append(id).append(" | ");
         sb.append(getName()).append('\n');
-        sb.append(type).append(" Individual Donor");
+        sb.append(type.toString()).append(" Individual Donor");
         sb.append("\nBirthday: ").append(birthday);
         sb.append("\nHome Region: ").append(homeRegion);
         sb.append('\n');

@@ -8,12 +8,14 @@ public enum DonorType {
     Government,Private,Public,Null;
     @Override
     public String toString(){
+        String s="";
         switch(this){
-            case Government: return "Government";
-            case Private: return "Private";
-            case Public: return "Public";
-            case Null: return "?";
-            default: return null;
+            case Government: s= "Government";break;
+            case Private: s= "Private";break;
+            case Public: s= "Public";break;
+            case Null: s= "?";break;
+            default:
         }
+        return s;
     }
 }

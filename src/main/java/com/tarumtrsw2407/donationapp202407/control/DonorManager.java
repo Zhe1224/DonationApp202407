@@ -48,7 +48,7 @@ public class DonorManager {
     public int add(DonorBody kind,String id,DonorType type,String firstName,String lastName,Date date,String region){
         Donor donor=(kind==DonorBody.Person)?new PersonDonor():(kind==DonorBody.Org)?new OrgDonor():null;
         if (donor==null) throw new IllegalArgumentException("Unspecified Donor Type!");
-        donor.setId(id);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
+        donor.setId(id);donor.setType(type);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
         return donors.append(donor);
     }
     public void update(Donor donor,String id,DonorType type,String firstName,String lastName,Date date,String region){

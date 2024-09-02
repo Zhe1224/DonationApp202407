@@ -100,7 +100,7 @@ public class OrgDonor implements Donor{
         StringBuilder sb = new StringBuilder();
         sb.append("\nID: ").append(id).append(" | ");
         sb.append(name).append('\n');
-        sb.append(type).append(" Donating Organisation");
+        sb.append(type.toString()).append(" Donating Organisation");
         sb.append("\nFounded: ").append(foundDate);
         sb.append("\nHome Region: ").append(homeRegion);
         sb.append('\n');
