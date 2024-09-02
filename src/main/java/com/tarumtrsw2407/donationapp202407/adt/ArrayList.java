@@ -32,7 +32,8 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         @Override
         public T next(){
             if (!hasNext()) return null;
-            return at(nextIndex++);
+            nextIndex++;
+            return at(nextIndex-1);
         }
     }
     private T[] array;
@@ -94,7 +95,9 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public ListInterface<Integer> getPosOf(T item,boolean global){
-        return getPosOf(wrap(item),global).at(0);
+        ListInterface<ListInterface<Integer>> r = getPosOf(wrap(item),global);
+        if (r.size()<1) return new ArrayList();
+        return r.at(0);
     }
     @Override
     public ListInterface<ListInterface<Integer>> getPosOf(ListInterface<T> items,boolean global){
@@ -109,18 +112,23 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         return getItemsAsArray(0,size()-1);
     }
     public T[] getItemsAsArray(int start, int end){
-        if ((start<0) || start+1>size()) outOfBounds(start);
-        if ((end<0) || end+1>size()) outOfBounds(end);
+        if ((start<0) || start>size()) outOfBounds(start);
+        if ((end<0) || end>size()) outOfBounds(end);
         if (start>end) illegalRange(start,end);
-        return copyOfRange(array, start, end);
+        return copyOfRange(array, start, end+1);
     }
     public ListInterface<ListInterface<Integer>> getPosOf(T[] items,boolean global){
         ListInterface<ListInterface<Integer>>output=new ArrayList<>();
-        int i=0;
-        for (T element:getItems()){ 
+        for (T item:items) {
+            int i=0;
             output.append(new ArrayList<Integer>());
-            for (T item:items) {if (element.equals(item)) {output.at(output.size()-1).append(i);break;}}
-            i++;
+            System.out.println("OO".concat(Integer.toString(getItems().size())));
+            for (T element:getItems()){ 
+                if (!element.equals(item)) continue;
+                output.at(output.size()-1).append(i);
+                if(!global) break;
+                i++;
+            }
         }
         return output;
     }
@@ -240,7 +248,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
         if (delta>0) expose(start,delta);
         System.arraycopy(items,0,array,start,items.length);
         if (delta<0) cover(start,-delta);
-        size+=delta;
+        size=size+delta;
         return cutout;
     }
     
