@@ -6,7 +6,7 @@ package com.tarumtrsw2407.donationapp202407.boundary;
 
 /**
  *
- * @author User
+ * @author Nathaniel Woo Shi Yan
  */
 import com.tarumtrsw2407.donationapp202407.control.VolunteerManager;
 import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
@@ -36,14 +36,13 @@ public class VolunteerUI {
             System.out.println("\nVolunteer Management System");
             System.out.println("1. Add Volunteer");
             System.out.println("2. Remove Volunteer");
-            System.out.println("3. Search Volunteer by ID");
-            System.out.println("4. Search Volunteer by Name");
-            System.out.println("5. Assign Volunteer to Event");
-            System.out.println("6. Search Events under a Volunteer");
-            System.out.println("7. List All Volunteers");
-            System.out.println("8. Filter Volunteers by Event");
-            System.out.println("9. Generate Summary Report");
-            System.out.println("10. Exit");
+            System.out.println("3. Search Volunteer");
+            System.out.println("4. Assign Volunteer to Event");
+            System.out.println("5. Search Events under a Volunteer");
+            System.out.println("6. List All Volunteers");
+            System.out.println("7. Filter Volunteers by Event");
+            System.out.println("8. Generate Summary Report");
+            System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
             
             while (!scanner.hasNextInt()) {
@@ -61,42 +60,40 @@ public class VolunteerUI {
                     removeVolunteer();
                     break;
                 case 3:
-                    searchVolunteerById();
+                    searchVolunteer();
                     break;
                 case 4:
-                    searchVolunteerByName();
-                    break;
-                case 5:
                     assignVolunteerToEvent();
                     break;
-                case 6:
+                case 5:
                     searchEventsUnderVolunteer();
                     break;
-                case 7:
+                case 6:
                     listAllVolunteers();
                     break;
-                case 8:
+                case 7:
                     filterVolunteersByEvent();
                     break;
-                case 9:
+                case 8:
                     generateSummaryReport();
                     break;
-                case 10:
+                case 9:
                     System.out.println("Exiting...");
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 10);
+        } while (true);
     }
 
     private void addVolunteer() {
+        while(true){
         System.out.print("Enter Volunteer ID (Format: V[number]): ");
         String id = scanner.nextLine();
 
         if (!id.matches("^V\\d+$")) {
             System.out.println("Invalid ID format. It should start with 'V' followed by numbers.");
-            return;
+            continue;
         }
 
         System.out.print("Enter Volunteer Name: ");
@@ -104,7 +101,7 @@ public class VolunteerUI {
 
         if (name.isEmpty()) {
             System.out.println("Name cannot be empty.");
-            return;
+            continue;
         }
 
         System.out.print("Enter Contact Number: ");
@@ -112,7 +109,7 @@ public class VolunteerUI {
 
         if (!isValidPhoneNumber(contactNumber)) {
             System.out.println("Invalid contact number.");
-            return;
+            continue;
         }
 
         System.out.print("Enter Email: ");
@@ -120,12 +117,13 @@ public class VolunteerUI {
 
         if (!isValidEmail(email)) {
             System.out.println("Invalid email format.");
-            return;
+            continue;
         }
-
         Volunteer volunteer = new Volunteer(id, name, contactNumber, email);
         volunteerManager.addVolunteer(volunteer);
         System.out.println("Volunteer added successfully.");
+        return;
+        }
     }
 
     private void removeVolunteer() {
@@ -136,6 +134,17 @@ public class VolunteerUI {
             System.out.println("Volunteer removed successfully.");
         } else {
             System.out.println("Volunteer not found.");
+        }
+    }
+    
+    private void searchVolunteer(){
+        System.out.println("Search by");
+        System.out.println("1. Search Volunteer by ID");
+        System.out.println("2. Search Volunteer by Name");
+        String r = scanner.nextLine();
+        switch (r){
+            case "1":searchVolunteerById();break;
+            case "2":searchVolunteerByName();break;
         }
     }
 
@@ -188,10 +197,7 @@ public class VolunteerUI {
     }
 
     private void listAllVolunteers() {
-        ListInterface<Volunteer> volunteers = volunteerManager.listAllVolunteers();
-        for (int i = 0; i < volunteers.size(); i++) {
-            System.out.println(volunteers.at(i));
-        }
+        System.out.println(volunteerManager.listAllVolunteers());
     }
 
     private void filterVolunteersByEvent() {

@@ -52,7 +52,7 @@ public class DonorManager {
         return donors.append(donor);
     }
     public void update(Donor donor,String id,DonorType type,String firstName,String lastName,Date date,String region){
-        donor.setId(id);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
+        donor.setId(id);donor.setType(type);donor.setName(firstName, lastName);donor.setExistDate(date);donor.setHomeRegion(region);
     }
     public void remove(Donor donor){
         donors.delete(donor);

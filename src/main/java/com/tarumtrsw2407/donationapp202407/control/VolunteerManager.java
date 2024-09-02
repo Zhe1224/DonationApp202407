@@ -6,7 +6,7 @@ package com.tarumtrsw2407.donationapp202407.control;
 
 /**
  *
- * @author User
+ * @author Nathaniel Woo Shi Yan
  */
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
@@ -56,7 +56,7 @@ public class VolunteerManager {
     public boolean assignVolunteerToEvent(String id, String event) {
         Volunteer volunteer = searchVolunteerById(id);
         if (volunteer != null) {
-            /*volunteer.assignEvent(event);*/
+            volunteer.assignEvent(event);
             return true;
         }
         return false;
@@ -64,21 +64,33 @@ public class VolunteerManager {
 
     public String searchEventUnderVolunteer(String id) {
         Volunteer volunteer = searchVolunteerById(id);
-        return /*volunteer != null ? volunteer.getAssignedEvent() :*/ null;
+        return volunteer != null ? volunteer.getAssignedEvent() : null;
     }
-
-    public ListInterface<Volunteer> listAllVolunteers() {
-        return volunteers;
+    
+    public String listAllVolunteers() {
+        StringBuilder sb=new StringBuilder();
+        if (volunteers.size()<1) {
+            sb.append("No volunteers available.");
+        } else {
+            sb.append(String.format("%-5s %-20s %-15s %-30s", "ID", "Name", "Contact", "Email")).append('\n');
+            sb.append("----------------------------------------------------------------------\n");
+            for (Volunteer volunteer : volunteers) {
+                sb.append(String.format("%-5s %-20s %-15s %-30s", 
+                    volunteer.getId(), volunteer.getName(), 
+                    volunteer.getContactNumber(), volunteer.getEmail())).append('\n');
+            }
+        }
+        return sb.toString();
     }
 
     public ListInterface<Volunteer> filterVolunteersByEvent(String event) {
         ListInterface<Volunteer> filteredVolunteers = new ArrayList<>();
-        /*for (int i = 0; i < volunteers.size(); i++) {
+        for (int i = 0; i < volunteers.size(); i++) {
             Volunteer volunteer = volunteers.at(i);
             if (event.equals(volunteer.getAssignedEvent())) {
                 filteredVolunteers.append(volunteer);
             }
-        }*/
+        }
         return filteredVolunteers;
     }
 
