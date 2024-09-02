@@ -12,7 +12,7 @@ import com.tarumtrsw2407.donationapp202407.entity.Donee;
 import com.tarumtrsw2407.donationapp202407.control.DoneeManager;
 import com.tarumtrsw2407.donationapp202407.entity.*;
 import java.util.Scanner;
-import utility.MessageUI;
+import com.tarumtrsw2407.donationapp202407.utility.MessageUI;
 
 public class DoneeUI {
 
