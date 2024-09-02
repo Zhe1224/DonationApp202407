@@ -148,6 +148,42 @@ public class DoneeArrayList<T> implements DoneeListInterface<T>, Serializable {
         return i + 1;
     }
 
+    //Generate a summary report
+    public String generateSummaryReport() {
+    int individualCount = 0;
+    int organizationCount = 0;
+    int familyCount = 0;
+    double totalDonationAmount = 0;
+
+    for (Donee donee : getAllDonees()) {
+        totalDonationAmount += donee.getTotalDonationAmount();
+        switch (donee.getType().toLowerCase()) {
+            case "individual":
+                individualCount++;
+                break;
+            case "organization":
+                organizationCount++;
+                break;
+            case "family":
+                familyCount++;
+                break;
+        }
+    }
+
+    return String.format(
+        "Summary Report:\n" +
+        "====================\n" +
+        "Total Donees: %d\n" +
+        " - Individuals: %d\n" +
+        " - Organizations: %d\n" +
+        " - Families: %d\n" +
+        "Total Donation Amount: $%.2f\n",
+        individualCount + organizationCount + familyCount,
+        individualCount, organizationCount, familyCount,
+        totalDonationAmount
+    );
+}
+
     // List all donees with their donations
     public void listAllDoneesWithDonations() {
         for (Donee donee : getAllDonees()) {
