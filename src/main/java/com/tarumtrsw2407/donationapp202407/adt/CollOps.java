@@ -6,7 +6,7 @@ package com.tarumtrsw2407.donationapp202407.adt;
 
 /**
  *
- * @author vk_wong
+ * @author Wong Xiao Zhe
  */
 public enum CollOps{
     append, filter, update, delete, leave;
