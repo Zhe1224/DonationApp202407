@@ -32,6 +32,10 @@ public class Donation {
     public void setDate(String date) {
         this.date = date;
     }
+    
+    public Donor getDonor(){
+        return new PersonDonor();
+    }
 
     @Override
     public String toString() {
