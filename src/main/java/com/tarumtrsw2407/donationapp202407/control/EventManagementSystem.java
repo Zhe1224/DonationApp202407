@@ -1,33 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tarumtrsw2407.donationapp202407.control;
 
-import com.tarumtrsw2407.donationapp202407.adt.ArrayList2;
+import com.tarumtrsw2407.donationapp202407.adt.ArrayList; 
 import com.tarumtrsw2407.donationapp202407.entity.Event;
 import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
-import com.tarumtrsw2407.donationapp202407.adt.ListInterface2;
+import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 
 /**
  *
  * @author KJ
  */
-
-
 public class EventManagementSystem {
-    private ListInterface2<Event> events;
-    private ListInterface2<Volunteer> volunteers;
+    private ListInterface<Event> events;
+    private ListInterface<Volunteer> volunteers;
 
     public EventManagementSystem() {
-        this.events = new ArrayList2<>();
-        this.volunteers = new ArrayList2<>();
+        this.events = new ArrayList<>();   // ArrayList implements ListInterface
+        this.volunteers = new ArrayList<>();
     }
 
     // Add a new event
     public boolean addEvent(Event event) {
         if (searchEvent(event.getId()) == null) {
-            return events.add(event);
+            events.append(event);   // Append event to the list
+            return true;
         }
         return false;  // Event ID already exists
     }
@@ -36,7 +31,7 @@ public class EventManagementSystem {
     public boolean removeEvent(String eventId) {
         int index = findEventIndexById(eventId);
         if (index != -1) {
-            events.remove(index + 1);  // +1 for 1-based index in ListInterface
+            events.delete(index);  // Delete using the correct index
             return true;
         }
         return false;
@@ -44,8 +39,8 @@ public class EventManagementSystem {
 
     // Search for an event
     public Event searchEvent(String eventId) {
-        for (int i = 1; i <= events.getNumberOfEntries(); i++) {
-            Event event = events.getEntry(i);
+        for (int i = 0; i < events.size(); i++) {  // Using 0-based indexing
+            Event event = events.at(i);
             if (event.getId().equals(eventId)) {
                 return event;
             }
@@ -67,11 +62,11 @@ public class EventManagementSystem {
 
     // List all events
     public void listAllEvents() {
-        if (events.isEmpty()) {
+        if (events.size() == 0) {
             System.out.println("No events available.");
         } else {
-            for (int i = 1; i <= events.getNumberOfEntries(); i++) {
-                System.out.println(events.getEntry(i));
+            for (int i = 0; i < events.size(); i++) {
+                System.out.println(events.at(i));
             }
         }
     }
@@ -81,7 +76,7 @@ public class EventManagementSystem {
         Event event = searchEvent(eventId);
         Volunteer volunteer = searchVolunteer(volunteerId);
         if (event != null && volunteer != null) {
-            return event.addVolunteer(volunteer);
+            return event.addVolunteer(volunteer);   // Add volunteer to the event
         }
         return false;  // Either event or volunteer not found
     }
@@ -90,7 +85,7 @@ public class EventManagementSystem {
     public boolean removeVolunteerFromEvent(String eventId, String volunteerId) {
         Event event = searchEvent(eventId);
         if (event != null) {
-            return event.removeVolunteer(volunteerId);
+            return event.removeVolunteer(volunteerId);   // Remove volunteer from the event
         }
         return false;  // Event not found
     }
@@ -99,8 +94,8 @@ public class EventManagementSystem {
     public void listEventsForVolunteer(String volunteerId) {
         Volunteer volunteer = searchVolunteer(volunteerId);
         if (volunteer != null) {
-            for (int i = 1; i <= events.getNumberOfEntries(); i++) {
-                Event event = events.getEntry(i);
+            for (int i = 0; i < events.size(); i++) {
+                Event event = events.at(i);
                 if (event.containsVolunteer(volunteerId)) {
                     System.out.println(event);
                 }
@@ -111,46 +106,39 @@ public class EventManagementSystem {
     }
 
     // Generate summary reports
-//    public void generateSummaryReport() {
-//        System.out.println("Summary Report:");
-//        System.out.println("Total Events: " + events.getNumberOfEntries());
-//        System.out.println("Total Volunteers: " + volunteers.getNumberOfEntries());
-//        // Additional summary details can be added here
-//    }
     public void generateSummaryReport() {
         System.out.println("");
         System.out.println("Summary Report:");
         System.out.println("--------------------------------------");
-        System.out.println("Total Events: " + events.getNumberOfEntries());
-        System.out.println("Total Volunteers: " + volunteers.getNumberOfEntries());
+        System.out.println("Total Events: " + events.size());
+        System.out.println("Total Volunteers: " + volunteers.size());
 
         System.out.println("--------------------------------------");
         System.out.println("\nEvent Details:");
         System.out.println("--------------------------------------");
-        for (int i = 1; i <= events.getNumberOfEntries(); i++) {
-            Event event = events.getEntry(i);
-            int totalVolunteers = event.getVolunteers().getNumberOfEntries();
+        for (int i = 0; i < events.size(); i++) {
+            Event event = events.at(i);
+            int totalVolunteers = event.getVolunteers().size();
             System.out.println("Event ID: " + event.getId());
             System.out.println("Event Name: " + event.getName());
             System.out.println("Total Volunteers: " + totalVolunteers);
             System.out.println("--------------------------------------");
         }
-        
-}
-
+    }
 
     // Add a new volunteer
     public boolean addVolunteer(Volunteer volunteer) {
         if (searchVolunteer(volunteer.getId()) == null) {
-            return volunteers.add(volunteer);
+            volunteers.append(volunteer);   // Append volunteer to the list
+            return true;
         }
         return false;  // Volunteer ID already exists
     }
 
     // Search for a volunteer
     public Volunteer searchVolunteer(String volunteerId) {
-        for (int i = 1; i <= volunteers.getNumberOfEntries(); i++) {
-            Volunteer volunteer = volunteers.getEntry(i);
+        for (int i = 0; i < volunteers.size(); i++) {
+            Volunteer volunteer = volunteers.at(i);
             if (volunteer.getId().equals(volunteerId)) {
                 return volunteer;
             }
@@ -159,14 +147,12 @@ public class EventManagementSystem {
     }
 
     private int findEventIndexById(String eventId) {
-        for (int i = 1; i <= events.getNumberOfEntries(); i++) {
-            Event event = events.getEntry(i);
+        for (int i = 0; i < events.size(); i++) {
+            Event event = events.at(i);
             if (event.getId().equals(eventId)) {
-                return i - 1;  // Convert 1-based index to 0-based index for ArrayList
+                return i;  // Return the index of the event
             }
         }
         return -1;  // Event not found
     }
-    
-    
 }
