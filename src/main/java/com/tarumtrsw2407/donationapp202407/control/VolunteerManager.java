@@ -10,13 +10,24 @@ package com.tarumtrsw2407.donationapp202407.control;
  */
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
+import com.tarumtrsw2407.donationapp202407.entity.Event;
 import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
 
 public class VolunteerManager {
     private ListInterface<Volunteer> volunteers;
+    private EventManagementSystem eventManager = new EventManagementSystem();
 
     public VolunteerManager() {
-        volunteers = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+
+    public VolunteerManager(ListInterface<Volunteer> volunteers) {
+        this(volunteers, new EventManagementSystem());
+    }
+
+    public VolunteerManager(ListInterface<Volunteer> volunteers, EventManagementSystem eventManager) {
+        this.volunteers = volunteers;
+        this.eventManager = eventManager;
     }
 
     public void addVolunteer(Volunteer volunteer) {
@@ -55,9 +66,9 @@ public class VolunteerManager {
 
     // Modified to handle multiple events
     public boolean assignVolunteerToEvent(String id, String eventId) {
-        Event event = eventManager.searchEventById(eventId);
+        Event event = eventManager.searchEvent(eventId);
         Volunteer volunteer = searchVolunteerById(id);
-        if (volunteer != null) {
+        if (volunteer != null && event!=null) {
             volunteer.getAssignedEvents().append(event); // Add event to the volunteer
             event.getVolunteers().append(volunteer); // Add volunteer to the event
             return true;
@@ -66,7 +77,7 @@ public class VolunteerManager {
     }
 
     public boolean unassignVolunteerFromEvent(String id, String eventId) {
-        Event event = eventManager.searchEventById(eventId);
+        Event event = eventManager.searchEvent(eventId);
         Volunteer volunteer = searchVolunteerById(id);
         if (volunteer != null) {
             volunteer.getAssignedEvents().delete(event); // Remove event from the volunteer
@@ -77,9 +88,9 @@ public class VolunteerManager {
     }
 
     // Modified to return all events assigned to a volunteer
-    public ListInterface<String> searchEventsUnderVolunteer(String id) {
+    public ListInterface<Event>/*EventManagementSystem*/ searchEventsUnderVolunteer(String id) {
         Volunteer volunteer = searchVolunteerById(id);
-        return volunteer != null ? volunteer.getAssignedEvents() : null;
+        return volunteer != null ? /*new EventManagementSystem(*/volunteer.getAssignedEvents()/*)*/ : null;
     }
 
     public String listAllVolunteers() {
@@ -100,11 +111,11 @@ public class VolunteerManager {
 
     // Modified to check if a volunteer is assigned to a specific event
     public ListInterface<Volunteer> filterVolunteersByEvent(String id) {
-        Event event = eventManager.searchEventById(id);
+        Event event = eventManager.searchEvent(id);
         ListInterface<Volunteer> filteredVolunteers = new ArrayList<>();
         for (int i = 0; i < volunteers.size(); i++) {
             Volunteer volunteer = volunteers.at(i);
-            if (volunteer.getAssignedEvents().contains(event)) { // Check if volunteer is assigned to the event
+            if (volunteer.getAssignedEvents().getPosOf(event) != -1) {
                 filteredVolunteers.append(volunteer);
             }
         }

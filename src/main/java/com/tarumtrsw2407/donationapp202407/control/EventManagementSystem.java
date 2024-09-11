@@ -14,8 +14,16 @@ public class EventManagementSystem {
     private ListInterface<Volunteer> volunteers;
 
     public EventManagementSystem() {
-        this.events = new ArrayList<>();   // ArrayList implements ListInterface
-        this.volunteers = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+
+    public EventManagementSystem(ListInterface<Event> events) {
+        this(events, new ArrayList<>());
+    }
+
+    public EventManagementSystem(ListInterface<Event> events, ListInterface<Volunteer> volunteers) {
+        this.events = events;
+        this.volunteers = volunteers;
     }
 
     // Add a new event
@@ -39,11 +47,10 @@ public class EventManagementSystem {
 
     // Search for an event
     public Event searchEvent(String eventId) {
-        for (int i = 0; i < events.size(); i++) {  // Using 0-based indexing
-            Event event = events.at(i);
-            if (event.getId().equals(eventId)) {
-                return event;
-            }
+        //results
+        ListInterface<Event> eventss = this.events.filter(e->e.getId().equals(eventId));
+        if (eventss.size() > 0) {
+            return eventss.at(0);
         }
         return null;  // Event not found
     }
@@ -77,7 +84,8 @@ public class EventManagementSystem {
         Volunteer volunteer = searchVolunteer(volunteerId);
         if (event != null && volunteer != null) {
             volunteer.getAssignedEvents().append(event);  // Add event to the volunteer's list
-            return event.getVolunteers().append(volunteer);  // Add volunteer to the event's list
+            event.getVolunteers().append(volunteer);  // Add volunteer to the event's list
+            return true;
         }
         return false;  // Either event or volunteer not found
     }
@@ -90,7 +98,8 @@ public class EventManagementSystem {
             if (volunteer != null) {
                 volunteer.getAssignedEvents().delete(event);  // Remove event from the volunteer's list
             }
-            return event.getVolunteers().delete(volunteer);  // Remove volunteer from the event's list
+            event.getVolunteers().delete(volunteer);  // Remove volunteer from the event's list
+            return true;
         }
         return false;  // Event not found
     }
@@ -101,7 +110,8 @@ public class EventManagementSystem {
         if (volunteer != null) {
             for (int i = 0; i < events.size(); i++) {
                 Event event = events.at(i);
-                if (event.containsVolunteer(volunteerId)) {
+                ListInterface<Volunteer> volunteerss = event.getVolunteers().filter(v->v.getId().equals(volunteerId));
+                if (volunteerss.size() > 0) {
                     System.out.println(event);
                 }
             }

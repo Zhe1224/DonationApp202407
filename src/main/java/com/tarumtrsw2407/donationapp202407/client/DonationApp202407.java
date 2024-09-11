@@ -7,6 +7,7 @@ package com.tarumtrsw2407.donationapp202407.client;
 import com.tarumtrsw2407.donationapp202407.boundary.EventUI;
 import com.tarumtrsw2407.donationapp202407.boundary.*;
 import com.tarumtrsw2407.donationapp202407.control.*;
+import com.tarumtrsw2407.donationapp202407.entity.Event;
 
 /**
  *
@@ -19,6 +20,8 @@ public class DonationApp202407 {
         DoneeManager donee=new DoneeManager();
         VolunteerManager volunteer=new VolunteerManager();
         EventManagementSystem event=new EventManager();
+        event.addEvent(new Event("E001", "Nature Blood Donation", "2024-09-10", "Central Park"));
+        event.addEvent(new Event("E002", "NYC Blood Donation", "2024-09-12", "Community Center"));
         Menu<String> m=new Menu<>();
         String[] menus={"Donor","Donee","Volunteer","Event","Exit"};
         for (String mm:menus)m.include(mm,mm);

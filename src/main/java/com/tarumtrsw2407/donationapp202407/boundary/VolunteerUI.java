@@ -12,26 +12,35 @@ import com.tarumtrsw2407.donationapp202407.control.VolunteerManager;
 import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
 import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 import com.tarumtrsw2407.donationapp202407.control.EventManagementSystem;
+import com.tarumtrsw2407.donationapp202407.entity.Event;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class VolunteerUI {
     private VolunteerManager volunteerManager;
+    private EventManagementSystem eventManager;
     private Scanner scanner;
 
     public VolunteerUI() {
-        volunteerManager = new VolunteerManager();
-        scanner = new Scanner(System.in);
+        this(new VolunteerManager());
     }
-    
-    public VolunteerUI(VolunteerManager volunteer, EventManagementSystem event) {
-        this();
-        volunteerManager = new VolunteerManager();
+
+    public VolunteerUI(VolunteerManager volunteerManager) {
+        this(volunteerManager, new EventManagementSystem());
+    }
+
+    public VolunteerUI(VolunteerManager volunteerManager, EventManagementSystem eventManager) {
+        this.volunteerManager = volunteerManager;
+        this.eventManager = eventManager;
+        scanner = new Scanner(System.in);
     }
 
     public void displayMenu() {
         int choice;
+        eventManager.addEvent(new Event("E001", "Nature Blood Donation", "2024-09-10", "Central Park"));
+        eventManager.addEvent(new Event("E002", "NYC Blood Donation", "2024-09-12", "Community Center"));
+        eventManager.listAllEvents();
         do {
             System.out.println("\nVolunteer Management System");
             System.out.println("1. Add Volunteer");
@@ -190,11 +199,24 @@ public class VolunteerUI {
         }
     }
 
+    private void unassignVolunteerFromEvent() {
+        System.out.print("Enter Volunteer ID: ");
+        String id = scanner.nextLine();
+        System.out.print("Enter Event ID: ");
+        String eventId = scanner.nextLine();
+        boolean unassigned = volunteerManager.unassignVolunteerFromEvent(id, eventId);
+        if (unassigned) {
+            System.out.println("Volunteer unassigned from event successfully.");
+        } else {
+            System.out.println("Volunteer not found or not assigned to the event.");
+        }
+    }
+
     // Modified to retrieve all events under a volunteer
     private void searchEventsUnderVolunteer() {
         System.out.print("Enter Volunteer ID: ");
         String id = scanner.nextLine();
-        ListInterface<String> events = volunteerManager.searchEventsUnderVolunteer(id);
+        ListInterface<Event> events = volunteerManager.searchEventsUnderVolunteer(id);
         if (events != null && events.size() > 0) {
             System.out.println("Assigned Events: ");
             for (int i = 0; i < events.size(); i++) {

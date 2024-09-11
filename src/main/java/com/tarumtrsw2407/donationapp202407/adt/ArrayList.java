@@ -81,6 +81,7 @@ public final class ArrayList<T> implements ListInterface<T>, Serializable{
     }
     @Override
     public ListInterface<T> getItems(){
+        if (size()<1) return new ArrayList();
         return getItems(0,size()-1);
     }
     @Override
