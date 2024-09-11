@@ -19,7 +19,7 @@ public class DonationApp202407 {
         DonorManager donor=new DonorManager();
         DoneeManager donee=new DoneeManager();
         VolunteerManager volunteer=new VolunteerManager();
-        EventManagementSystem event=new EventManager();
+        EventManagementSystem event=new EventManagementSystem();
         event.addEvent(new Event("E001", "Nature Blood Donation", "2024-09-10", "Central Park"));
         event.addEvent(new Event("E002", "NYC Blood Donation", "2024-09-12", "Community Center"));
         Menu<String> m=new Menu<>();

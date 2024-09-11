@@ -15,7 +15,7 @@ import com.tarumtrsw2407.donationapp202407.entity.Volunteer;
 
 public class VolunteerManager {
     private ListInterface<Volunteer> volunteers;
-    private EventManagementSystem eventManager = new EventManagementSystem();
+    private EventManagementSystem eventManager;
 
     public VolunteerManager() {
         this(new ArrayList<>());
@@ -28,6 +28,11 @@ public class VolunteerManager {
     public VolunteerManager(ListInterface<Volunteer> volunteers, EventManagementSystem eventManager) {
         this.volunteers = volunteers;
         this.eventManager = eventManager;
+    }
+    
+    public VolunteerManager setEvents(EventManagementSystem eventManager){
+        this.eventManager = eventManager;
+        return this;
     }
 
     public void addVolunteer(Volunteer volunteer) {

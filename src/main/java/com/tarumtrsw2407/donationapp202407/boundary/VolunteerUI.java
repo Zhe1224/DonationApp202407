@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 
 public class VolunteerUI {
     private VolunteerManager volunteerManager;
-    private EventManagementSystem eventManager;
     private Scanner scanner;
 
     public VolunteerUI() {
@@ -31,16 +30,12 @@ public class VolunteerUI {
     }
 
     public VolunteerUI(VolunteerManager volunteerManager, EventManagementSystem eventManager) {
-        this.volunteerManager = volunteerManager;
-        this.eventManager = eventManager;
+        this.volunteerManager = volunteerManager.setEvents(eventManager);
         scanner = new Scanner(System.in);
     }
 
     public void displayMenu() {
         int choice;
-        eventManager.addEvent(new Event("E001", "Nature Blood Donation", "2024-09-10", "Central Park"));
-        eventManager.addEvent(new Event("E002", "NYC Blood Donation", "2024-09-12", "Community Center"));
-        eventManager.listAllEvents();
         do {
             System.out.println("\nVolunteer Management System");
             System.out.println("1. Add Volunteer");
@@ -53,7 +48,6 @@ public class VolunteerUI {
             System.out.println("8. Generate Summary Report");
             System.out.println("9. Exit");
             System.out.print("Enter your choice: ");
-            
             while (!scanner.hasNextInt()) {
                 System.out.print("Please enter a valid choice: ");
                 scanner.next();  // discard invalid input
@@ -261,8 +255,7 @@ public class VolunteerUI {
     }
     
     public VolunteerManager main(String[] args) {
-        VolunteerUI ui = new VolunteerUI();
-        ui.displayMenu();
+        displayMenu();
         return volunteerManager;
     }
 }
