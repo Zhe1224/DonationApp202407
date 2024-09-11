@@ -1,8 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tarumtrsw2407.donationapp202407.entity;
+
+import com.tarumtrsw2407.donationapp202407.adt.ArrayList;
+import com.tarumtrsw2407.donationapp202407.adt.ListInterface;
 
 /**
  *
@@ -13,14 +12,14 @@ public class Volunteer {
     private String name;
     private String contactNumber;
     private String email;
-    private String assignedEvent;
+    private ListInterface<Event> assignedEvents;
 
     public Volunteer(String id, String name, String contactNumber, String email) {
         this.id = id;
         this.name = name;
         this.contactNumber = contactNumber;
         this.email = email;
-        this.assignedEvent = null; 
+        this.assignedEvents = new ArrayList<>(); // List to store multiple events
     }
 
     public String getId() {
@@ -39,13 +38,28 @@ public class Volunteer {
         return email;
     }
     
-    public String getAssignedEvent() {
-        return assignedEvent;
+    public ListInterface<Event> getAssignedEvents() {
+        return assignedEvents;
     }
-    
-    public void assignEvent(String event) {
-        this.assignedEvent = event;
+    /*
+    // Assign the volunteer to a new event
+    public void assignEvent(Event event) {
+        if (assignedEvents.getPosOf(event)<0) {
+            assignedEvents.append(event); // Add the event if it's not already assigned
+        }
     }
+
+    // Unassign the volunteer from an event
+    public boolean unassignEvent(Event event) {
+        for (int i = 0; i < assignedEvents.size(); i++) {
+            if (assignedEvents.at(i).equals(event)) {
+                assignedEvents.delete(i);
+                return true;
+            }
+        }
+        return false; // Event not found in the list
+    }
+        */
 
     public void setName(String name) {
         this.name = name;
@@ -66,7 +80,10 @@ public class Volunteer {
         sb.append("Name: ").append(name).append("\n");
         sb.append("Contact Number: ").append(contactNumber).append("\n");
         sb.append("Email: ").append(email).append("\n");
-        sb.append("Assigned Event: ").append(assignedEvent != null ? assignedEvent : "No event assigned").append("\n");
+        sb.append("Assigned Events: \n");
+        /*for (int i = 0; i < assignedEvents.size(); i++) {
+            sb.append("  - ").append(assignedEvents.at(i)).append("\n");
+        }*/
         return sb.toString();
     }
 }

@@ -53,23 +53,38 @@ public class VolunteerManager {
         return matchingVolunteers;
     }
 
-    public boolean assignVolunteerToEvent(String id, String event) {
+    // Modified to handle multiple events
+    public boolean assignVolunteerToEvent(String id, String eventId) {
+        Event event = eventManager.searchEventById(eventId);
         Volunteer volunteer = searchVolunteerById(id);
         if (volunteer != null) {
-            volunteer.assignEvent(event);
+            volunteer.getAssignedEvents().append(event); // Add event to the volunteer
+            event.getVolunteers().append(volunteer); // Add volunteer to the event
             return true;
         }
         return false;
     }
 
-    public String searchEventUnderVolunteer(String id) {
+    public boolean unassignVolunteerFromEvent(String id, String eventId) {
+        Event event = eventManager.searchEventById(eventId);
         Volunteer volunteer = searchVolunteerById(id);
-        return volunteer != null ? volunteer.getAssignedEvent() : null;
+        if (volunteer != null) {
+            volunteer.getAssignedEvents().delete(event); // Remove event from the volunteer
+            event.getVolunteers().delete(volunteer); // Remove volunteer from the event
+            return true;
+        }
+        return false;
     }
-    
+
+    // Modified to return all events assigned to a volunteer
+    public ListInterface<String> searchEventsUnderVolunteer(String id) {
+        Volunteer volunteer = searchVolunteerById(id);
+        return volunteer != null ? volunteer.getAssignedEvents() : null;
+    }
+
     public String listAllVolunteers() {
-        StringBuilder sb=new StringBuilder();
-        if (volunteers.size()<1) {
+        StringBuilder sb = new StringBuilder();
+        if (volunteers.size() < 1) {
             sb.append("No volunteers available.");
         } else {
             sb.append(String.format("%-5s %-20s %-15s %-30s", "ID", "Name", "Contact", "Email")).append('\n');
@@ -83,11 +98,13 @@ public class VolunteerManager {
         return sb.toString();
     }
 
-    public ListInterface<Volunteer> filterVolunteersByEvent(String event) {
+    // Modified to check if a volunteer is assigned to a specific event
+    public ListInterface<Volunteer> filterVolunteersByEvent(String id) {
+        Event event = eventManager.searchEventById(id);
         ListInterface<Volunteer> filteredVolunteers = new ArrayList<>();
         for (int i = 0; i < volunteers.size(); i++) {
             Volunteer volunteer = volunteers.at(i);
-            if (event.equals(volunteer.getAssignedEvent())) {
+            if (volunteer.getAssignedEvents().contains(event)) { // Check if volunteer is assigned to the event
                 filteredVolunteers.append(volunteer);
             }
         }
@@ -96,11 +113,25 @@ public class VolunteerManager {
 
     public String generateSummaryReport() {
         StringBuilder report = new StringBuilder();
-        report.append("Volunteer Summary Report\n");
-        report.append("========================\n");
+
+        // Summary Header
+        report.append("\nVolunteer Summary Report:\n");
+        report.append("--------------------------------------\n");
+
+        // Total Volunteers
+        report.append("Total Volunteers: ").append(volunteers.size()).append("\n");
+
+        // Calculate total number of event assignments across all volunteers
+        int totalEventAssignments = 0;
         for (int i = 0; i < volunteers.size(); i++) {
-            report.append(volunteers.at(i).toString()).append("\n");
+            Volunteer volunteer = volunteers.at(i);
+            totalEventAssignments += volunteer.getAssignedEvents().size(); // Assuming getAssignedEvents() returns a ListInterface of events
         }
+
+        // Total number of event assignments
+        report.append("Total Events Assigned to Volunteers: ").append(totalEventAssignments).append("\n");
+        report.append("--------------------------------------\n");
+
         return report.toString();
     }
 }

@@ -25,7 +25,7 @@ public class VolunteerUI {
         scanner = new Scanner(System.in);
     }
     
-    public VolunteerUI(VolunteerManager volunteer,EventManagementSystem event) {
+    public VolunteerUI(VolunteerManager volunteer, EventManagementSystem event) {
         this();
         volunteerManager = new VolunteerManager();
     }
@@ -88,41 +88,41 @@ public class VolunteerUI {
 
     private void addVolunteer() {
         while(true){
-        System.out.print("Enter Volunteer ID (Format: V[number]): ");
-        String id = scanner.nextLine();
+            System.out.print("Enter Volunteer ID (Format: V[number]): ");
+            String id = scanner.nextLine();
 
-        if (!id.matches("^V\\d+$")) {
-            System.out.println("Invalid ID format. It should start with 'V' followed by numbers.");
-            continue;
-        }
+            if (!id.matches("^V\\d+$")) {
+                System.out.println("Invalid ID format. It should start with 'V' followed by numbers.");
+                continue;
+            }
 
-        System.out.print("Enter Volunteer Name: ");
-        String name = scanner.nextLine();
+            System.out.print("Enter Volunteer Name: ");
+            String name = scanner.nextLine();
 
-        if (name.isEmpty()) {
-            System.out.println("Name cannot be empty.");
-            continue;
-        }
+            if (name.isEmpty()) {
+                System.out.println("Name cannot be empty.");
+                continue;
+            }
 
-        System.out.print("Enter Contact Number: ");
-        String contactNumber = scanner.nextLine();
+            System.out.print("Enter Contact Number: ");
+            String contactNumber = scanner.nextLine();
 
-        if (!isValidPhoneNumber(contactNumber)) {
-            System.out.println("Invalid contact number.");
-            continue;
-        }
+            if (!isValidPhoneNumber(contactNumber)) {
+                System.out.println("Invalid contact number.");
+                continue;
+            }
 
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
 
-        if (!isValidEmail(email)) {
-            System.out.println("Invalid email format.");
-            continue;
-        }
-        Volunteer volunteer = new Volunteer(id, name, contactNumber, email);
-        volunteerManager.addVolunteer(volunteer);
-        System.out.println("Volunteer added successfully.");
-        return;
+            if (!isValidEmail(email)) {
+                System.out.println("Invalid email format.");
+                continue;
+            }
+            Volunteer volunteer = new Volunteer(id, name, contactNumber, email);
+            volunteerManager.addVolunteer(volunteer);
+            System.out.println("Volunteer added successfully.");
+            return;
         }
     }
 
@@ -137,14 +137,18 @@ public class VolunteerUI {
         }
     }
     
-    private void searchVolunteer(){
+    private void searchVolunteer() {
         System.out.println("Search by");
         System.out.println("1. Search Volunteer by ID");
         System.out.println("2. Search Volunteer by Name");
         String r = scanner.nextLine();
-        switch (r){
-            case "1":searchVolunteerById();break;
-            case "2":searchVolunteerByName();break;
+        switch (r) {
+            case "1":
+                searchVolunteerById();
+                break;
+            case "2":
+                searchVolunteerByName();
+                break;
         }
     }
 
@@ -172,6 +176,7 @@ public class VolunteerUI {
         }
     }
 
+    // Modified to assign a volunteer to multiple events
     private void assignVolunteerToEvent() {
         System.out.print("Enter Volunteer ID: ");
         String id = scanner.nextLine();
@@ -185,14 +190,18 @@ public class VolunteerUI {
         }
     }
 
+    // Modified to retrieve all events under a volunteer
     private void searchEventsUnderVolunteer() {
         System.out.print("Enter Volunteer ID: ");
         String id = scanner.nextLine();
-        String event = volunteerManager.searchEventUnderVolunteer(id);
-        if (event != null) {
-            System.out.println("Assigned Event: " + event);
+        ListInterface<String> events = volunteerManager.searchEventsUnderVolunteer(id);
+        if (events != null && events.size() > 0) {
+            System.out.println("Assigned Events: ");
+            for (int i = 0; i < events.size(); i++) {
+                System.out.println(events.at(i));
+            }
         } else {
-            System.out.println("Volunteer not found or no event assigned.");
+            System.out.println("Volunteer not found or no events assigned.");
         }
     }
 
@@ -200,6 +209,7 @@ public class VolunteerUI {
         System.out.println(volunteerManager.listAllVolunteers());
     }
 
+    // Modified to handle multiple events for a volunteer
     private void filterVolunteersByEvent() {
         System.out.print("Enter Event Name: ");
         String event = scanner.nextLine();

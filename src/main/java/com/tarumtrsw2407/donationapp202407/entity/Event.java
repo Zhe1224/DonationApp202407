@@ -54,6 +54,7 @@ public class Event {
     public void setLocation(String location) {
         this.location = location;
     }
+    /*
 
     // Add a volunteer to the event
     public boolean addVolunteer(Volunteer volunteer) {
@@ -86,6 +87,7 @@ public class Event {
         }
         return false;
     }
+        */
 
     // Get the list of volunteers for this event
     public ListInterface<Volunteer> getVolunteers() {

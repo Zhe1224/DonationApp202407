@@ -76,7 +76,8 @@ public class EventManagementSystem {
         Event event = searchEvent(eventId);
         Volunteer volunteer = searchVolunteer(volunteerId);
         if (event != null && volunteer != null) {
-            return event.addVolunteer(volunteer);   // Add volunteer to the event
+            volunteer.getAssignedEvents().append(event);  // Add event to the volunteer's list
+            return event.getVolunteers().append(volunteer);  // Add volunteer to the event's list
         }
         return false;  // Either event or volunteer not found
     }
@@ -85,7 +86,11 @@ public class EventManagementSystem {
     public boolean removeVolunteerFromEvent(String eventId, String volunteerId) {
         Event event = searchEvent(eventId);
         if (event != null) {
-            return event.removeVolunteer(volunteerId);   // Remove volunteer from the event
+            Volunteer volunteer = searchVolunteer(volunteerId);
+            if (volunteer != null) {
+                volunteer.getAssignedEvents().delete(event);  // Remove event from the volunteer's list
+            }
+            return event.getVolunteers().delete(volunteer);  // Remove volunteer from the event's list
         }
         return false;  // Event not found
     }
