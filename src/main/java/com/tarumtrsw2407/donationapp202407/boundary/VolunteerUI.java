@@ -183,7 +183,7 @@ public class VolunteerUI {
     private void assignVolunteerToEvent() {
         System.out.print("Enter Volunteer ID: ");
         String id = scanner.nextLine();
-        System.out.print("Enter Event Name: ");
+        System.out.print("Enter Event ID: ");
         String event = scanner.nextLine();
         boolean assigned = volunteerManager.assignVolunteerToEvent(id, event);
         if (assigned) {
@@ -227,7 +227,7 @@ public class VolunteerUI {
 
     // Modified to handle multiple events for a volunteer
     private void filterVolunteersByEvent() {
-        System.out.print("Enter Event Name: ");
+        System.out.print("Enter Event ID: ");
         String event = scanner.nextLine();
         ListInterface<Volunteer> volunteers = volunteerManager.filterVolunteersByEvent(event);
         if (volunteers.size() > 0) {
